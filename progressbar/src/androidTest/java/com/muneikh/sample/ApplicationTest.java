@@ -1,4 +1,4 @@
-package com.muneikh.segmentedprogressbar;
+package com.muneikh.sample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.muneikh.segmentedprogressbar;
+package com.muneikh.sample;
 
 import android.os.Handler;
 import android.os.Message;

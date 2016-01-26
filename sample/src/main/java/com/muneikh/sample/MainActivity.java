@@ -1,4 +1,4 @@
-package com.muneikh.segmentedprogressbar;
+package com.muneikh.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;

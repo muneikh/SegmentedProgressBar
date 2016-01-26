@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.muneikh.segmentedprogressbar;
+package com.muneikh.sample;
 
 import android.content.Context;
 import android.graphics.Canvas;

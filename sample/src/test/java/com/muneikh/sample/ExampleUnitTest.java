@@ -1,4 +1,4 @@
-package com.muneikh.segmentedprogressbar;
+package com.muneikh.sample;
 
 import org.junit.Test;
 
