@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// Adapted from Android's CountDownTimer class
-
 package com.muneikh.segmentedprogressbar;
 
 import android.os.Handler;
