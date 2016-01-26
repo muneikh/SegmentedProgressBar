@@ -18,7 +18,6 @@ package com.muneikh.segmentedprogressbar;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -30,21 +29,18 @@ import java.util.List;
 
 public class SegmentedProgressBar extends View {
 
-    private static final String TAG = "SegmentedProgressBar";
-
     private static final int TOTAL_LIMIT = 15000; // ms
     private static final int FPS_IN_MILLI = 17; // 16.66 ~ 60fps
-    private static final int DIVIDER_WIDTH = 2;
 
-    private Paint paint = new Paint();
+    private Paint progressPaint = new Paint();
     private Paint dividerPaint = new Paint();
 
-    private int dividerCount = 0;
-    private List<Float> dividerPositions;
-
-    private int progressBarWidth;
     private float percentCompleted;
+    private int progressBarWidth;
+    private int dividerCount = 0;
+    private int dividerWidth = 2;
 
+    private List<Float> dividerPositions;
     private CountDownTimerWithPause countDownTimerWithPause;
 
     public SegmentedProgressBar(Context context) {
@@ -66,19 +62,25 @@ public class SegmentedProgressBar extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         progressBarWidth = w;
+    }
 
-        paint.setColor(Color.RED);
-        dividerPaint.setColor(Color.BLACK);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-        Shader mShader = new LinearGradient(0, 0, w, h, new int[]{
-                getResources().getColor(R.color.blue), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow)},
-                null, Shader.TileMode.REPEAT);  // CLAMP MIRROR REPEAT
-        paint.setShader(mShader);
+        canvas.drawRect(0, 0, percentCompleted, getHeight(), progressPaint);
+
+        if (dividerCount > 0) {
+            for (int i = 0; i < dividerCount; i++) {
+                float leftPosition = dividerPositions.get(i);
+                canvas.drawRect(leftPosition, 0, leftPosition + dividerWidth, getHeight(), dividerPaint);
+            }
+        }
     }
 
     private void init() {
         dividerPositions = new ArrayList<>();
-        countDownTimerWithPause = new CountDownTimerWithPause(TOTAL_LIMIT, FPS_IN_MILLI, true) {
+        countDownTimerWithPause = new CountDownTimerWithPause(TOTAL_LIMIT, FPS_IN_MILLI, false) {
             @Override
             public void onTick(long millisUntilFinished) {
                 long timePassed = TOTAL_LIMIT - millisUntilFinished;
@@ -92,36 +94,8 @@ public class SegmentedProgressBar extends View {
         }.create();
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        canvas.drawRect(0, 0, percentCompleted, getHeight(), paint);
-
-        if (dividerCount > 0) {
-            for (int i = 0; i < dividerCount; i++) {
-                float leftPosition = dividerPositions.get(i);
-                canvas.drawRect(leftPosition, 0, leftPosition + DIVIDER_WIDTH, getHeight(), dividerPaint);
-            }
-        }
-    }
-
-    protected void pause() {
-        countDownTimerWithPause.pause();
-        updateDivider();
-    }
-
-    protected void resume() {
-        countDownTimerWithPause.resume();
-    }
-
-    protected void cancel() {
-        countDownTimerWithPause.cancel();
-    }
-
     private void updateProgress(long millisPassed) {
         percentCompleted = progressBarWidth * (float) millisPassed / TOTAL_LIMIT;
-        //Log.d(TAG, "updateProgress: percentageCompleted : " + percentCompleted);
         invalidate();
     }
 
@@ -130,4 +104,39 @@ public class SegmentedProgressBar extends View {
         dividerPositions.add(percentCompleted);
         invalidate();
     }
+
+    public void pause() {
+        countDownTimerWithPause.pause();
+        updateDivider();
+    }
+
+    public void resume() {
+        countDownTimerWithPause.resume();
+    }
+
+    public void cancel() {
+        countDownTimerWithPause.cancel();
+    }
+
+    public void setShader(int[] colors) {
+        Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
+        progressPaint.setShader(shader);
+    }
+
+    public void setProgressColor(int color) {
+        progressPaint.setColor(color);
+    }
+
+    public void setDividerColor(int color) {
+        dividerPaint.setColor(color);
+    }
+
+    public void setDividerWidth(int width) {
+        if (width < 0) {
+            throw new RuntimeException("Divider width can not be negative");
+        }
+
+        dividerWidth = width;
+    }
+
 }
