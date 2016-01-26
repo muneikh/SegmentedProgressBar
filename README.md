@@ -4,6 +4,12 @@ Segmented Progress Bar
 A simple segmented progress bar that allows to add dividers to display chunked loading.
 
 ```java
+
+<com.muneikh.sample.SegmentedProgressBar
+        android:id="@+id/segmentedProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
 class ExampleActivity extends Activity {
 
 private SegmentedProgressBar segmentedProgressBar;
