@@ -29,7 +29,7 @@ import java.util.List;
 
 public class SegmentedProgressBar extends View {
 
-    private static final int FPS_IN_MILLI = 17; // 16.66 ~ 60fps
+    private static final int FPS_IN_MILLI = 16; // 16.66 ~ 60fps
 
     private Paint progressPaint = new Paint();
     private Paint dividerPaint = new Paint();
