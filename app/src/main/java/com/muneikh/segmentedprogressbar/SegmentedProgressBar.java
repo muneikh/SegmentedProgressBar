@@ -39,6 +39,7 @@ public class SegmentedProgressBar extends View {
     private long maxTimeInMillis;
     private int dividerCount = 0;
     private int dividerWidth = 2;
+    private boolean isDividerEnabled;
 
     private List<Float> dividerPositions;
     private CountDownTimerWithPause countDownTimerWithPause;
@@ -70,7 +71,7 @@ public class SegmentedProgressBar extends View {
 
         canvas.drawRect(0, 0, percentCompleted, getHeight(), progressPaint);
 
-        if (dividerCount > 0) {
+        if (dividerCount > 0 && isDividerEnabled) {
             for (int i = 0; i < dividerCount; i++) {
                 float leftPosition = dividerPositions.get(i);
                 canvas.drawRect(leftPosition, 0, leftPosition + dividerWidth, getHeight(), dividerPaint);
@@ -108,6 +109,7 @@ public class SegmentedProgressBar extends View {
 
     /**
      * Apply the shader for the for the progress bar.
+     *
      * @param colors
      */
     public void setShader(int[] colors) {
@@ -117,6 +119,7 @@ public class SegmentedProgressBar extends View {
 
     /**
      * Set the color for the progress bar
+     *
      * @param color
      */
     public void setProgressColor(int color) {
@@ -125,6 +128,7 @@ public class SegmentedProgressBar extends View {
 
     /**
      * Set the color for the divider bar
+     *
      * @param color
      */
     public void setDividerColor(int color) {
@@ -133,6 +137,7 @@ public class SegmentedProgressBar extends View {
 
     /**
      * set the width of the divider
+     *
      * @param width
      */
     public void setDividerWidth(int width) {
@@ -149,7 +154,7 @@ public class SegmentedProgressBar extends View {
      *
      * @param timeInMillis
      */
-    public void setupAutoProgress(long timeInMillis) {
+    public void enableAutoProgressView(long timeInMillis) {
         if (timeInMillis < 0) {
             throw new RuntimeException("Time can not be in negative");
         }
@@ -168,5 +173,9 @@ public class SegmentedProgressBar extends View {
                 updateProgress(SegmentedProgressBar.this.maxTimeInMillis);
             }
         }.create();
+    }
+
+    public void setDividerEnabled(boolean value) {
+        isDividerEnabled = value;
     }
 }
