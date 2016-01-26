@@ -29,7 +29,6 @@ import java.util.List;
 
 public class SegmentedProgressBar extends View {
 
-    private static final int TOTAL_LIMIT = 15000; // ms
     private static final int FPS_IN_MILLI = 17; // 16.66 ~ 60fps
 
     private Paint progressPaint = new Paint();
@@ -37,6 +36,7 @@ public class SegmentedProgressBar extends View {
 
     private float percentCompleted;
     private int progressBarWidth;
+    private long maxTimeInMillis;
     private int dividerCount = 0;
     private int dividerWidth = 2;
 
@@ -80,22 +80,10 @@ public class SegmentedProgressBar extends View {
 
     private void init() {
         dividerPositions = new ArrayList<>();
-        countDownTimerWithPause = new CountDownTimerWithPause(TOTAL_LIMIT, FPS_IN_MILLI, false) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long timePassed = TOTAL_LIMIT - millisUntilFinished;
-                updateProgress(timePassed);
-            }
-
-            @Override
-            public void onFinish() {
-                updateProgress(TOTAL_LIMIT);
-            }
-        }.create();
     }
 
     private void updateProgress(long millisPassed) {
-        percentCompleted = progressBarWidth * (float) millisPassed / TOTAL_LIMIT;
+        percentCompleted = progressBarWidth * (float) millisPassed / maxTimeInMillis;
         invalidate();
     }
 
@@ -118,19 +106,35 @@ public class SegmentedProgressBar extends View {
         countDownTimerWithPause.cancel();
     }
 
+    /**
+     * Apply the shader for the for the progress bar.
+     * @param colors
+     */
     public void setShader(int[] colors) {
         Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
         progressPaint.setShader(shader);
     }
 
+    /**
+     * Set the color for the progress bar
+     * @param color
+     */
     public void setProgressColor(int color) {
         progressPaint.setColor(color);
     }
 
+    /**
+     * Set the color for the divider bar
+     * @param color
+     */
     public void setDividerColor(int color) {
         dividerPaint.setColor(color);
     }
 
+    /**
+     * set the width of the divider
+     * @param width
+     */
     public void setDividerWidth(int width) {
         if (width < 0) {
             throw new RuntimeException("Divider width can not be negative");
@@ -139,4 +143,30 @@ public class SegmentedProgressBar extends View {
         dividerWidth = width;
     }
 
+    /**
+     * The progress bar will be auto progressing within the given time limit towards completion
+     * where the it can be paused and resumed.
+     *
+     * @param timeInMillis
+     */
+    public void setupAutoProgress(long timeInMillis) {
+        if (timeInMillis < 0) {
+            throw new RuntimeException("Time can not be in negative");
+        }
+
+        this.maxTimeInMillis = timeInMillis;
+
+        countDownTimerWithPause = new CountDownTimerWithPause(maxTimeInMillis, FPS_IN_MILLI, false) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long timePassed = SegmentedProgressBar.this.maxTimeInMillis - millisUntilFinished;
+                updateProgress(timePassed);
+            }
+
+            @Override
+            public void onFinish() {
+                updateProgress(SegmentedProgressBar.this.maxTimeInMillis);
+            }
+        }.create();
+    }
 }

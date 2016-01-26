@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         segmentedProgressBar = (SegmentedProgressBar) findViewById(R.id.segmentedProgressBar);
 
         //segmentedProgressBar.setShader(new int[]{getResources().getColor(R.color.blue), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow)});
-
+        segmentedProgressBar.setupAutoProgress(30000);
         segmentedProgressBar.setProgressColor(Color.RED);
         segmentedProgressBar.setDividerColor(Color.BLACK);
 
