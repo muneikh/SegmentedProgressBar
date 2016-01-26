@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.muneikh.sample;
+package com.muneikh;
 
 import android.os.Handler;
 import android.os.Message;

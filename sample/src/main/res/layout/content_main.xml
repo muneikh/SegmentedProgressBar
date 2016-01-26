@@ -12,7 +12,7 @@
     tools:context="com.muneikh.sample.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <com.muneikh.sample.SegmentedProgressBar
+    <com.muneikh.SegmentedProgressBar
         android:id="@+id/segmentedProgressBar"
         android:layout_width="match_parent"
         android:layout_height="10dp" />
