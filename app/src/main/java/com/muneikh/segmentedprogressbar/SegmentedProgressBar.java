@@ -7,7 +7,6 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -52,22 +51,17 @@ public class SegmentedProgressBar extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         progressBarWidth = w;
 
-        dividerPositions = new ArrayList<>();
-
-    }
-
-    private void init() {
         paint.setColor(Color.RED);
         dividerPaint.setColor(Color.BLACK);
 
-//        paint.setShader(new LinearGradient(0, 0, 0, 250, Color.WHITE, Color.BLUE, Shader.TileMode.MIRROR));
-//        paint.setShader(new LinearGradient(0, 0, 0, getHeight(), Color.GREEN, Color.RED, Shader.TileMode.CLAMP));
-
-        Shader mShader = new LinearGradient(0, 0, 100, 70, new int[]{
+        Shader mShader = new LinearGradient(0, 0, w, h, new int[]{
                 getResources().getColor(R.color.blue), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow)},
-                null, Shader.TileMode.MIRROR);  // CLAMP MIRROR REPEAT
+                null, Shader.TileMode.REPEAT);  // CLAMP MIRROR REPEAT
         paint.setShader(mShader);
+    }
 
+    private void init() {
+        dividerPositions = new ArrayList<>();
         countDownTimerWithPause = new CountDownTimerWithPause(TOTAL_LIMIT, FPS_IN_MILLI, true) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -91,7 +85,6 @@ public class SegmentedProgressBar extends View {
         if (dividerCount > 0) {
             for (int i = 0; i < dividerCount; i++) {
                 float leftPosition = dividerPositions.get(i);
-                Log.d(TAG, "onDraw: DrawDivider - leftPosition : " + leftPosition);
                 canvas.drawRect(leftPosition, 0, leftPosition + DIVIDER_WIDTH, getHeight(), dividerPaint);
             }
         }
