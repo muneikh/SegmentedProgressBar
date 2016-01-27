@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:23'
+    compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -21,5 +21,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.+'
 }

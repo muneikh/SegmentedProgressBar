@@ -22,18 +22,21 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SegmentedProgressBar extends View {
+    private static final String TAG = "SegmentedProgressBar";
 
     private static final int FPS_IN_MILLI = 16; // 16.66 ~ 60fps
 
     private Paint progressPaint = new Paint();
     private Paint dividerPaint = new Paint();
 
+    private float lastDividerPosition;
     private float percentCompleted;
     private int progressBarWidth;
     private long maxTimeInMillis;
@@ -88,15 +91,8 @@ public class SegmentedProgressBar extends View {
         invalidate();
     }
 
-    private void updateDivider() {
-        dividerCount += 1;
-        dividerPositions.add(percentCompleted);
-        invalidate();
-    }
-
     public void pause() {
         countDownTimerWithPause.pause();
-        updateDivider();
     }
 
     public void resume() {
@@ -142,7 +138,8 @@ public class SegmentedProgressBar extends View {
      */
     public void setDividerWidth(int width) {
         if (width < 0) {
-            throw new RuntimeException("Divider width can not be negative");
+            Log.w(TAG, "setDividerWidth: Divider width can not be negative");
+            return;
         }
 
         dividerWidth = width;
@@ -156,7 +153,8 @@ public class SegmentedProgressBar extends View {
      */
     public void enableAutoProgressView(long timeInMillis) {
         if (timeInMillis < 0) {
-            throw new RuntimeException("Time can not be in negative");
+            Log.w(TAG, "enableAutoProgressView: Time can not be in negative");
+            return;
         }
 
         this.maxTimeInMillis = timeInMillis;
@@ -178,4 +176,34 @@ public class SegmentedProgressBar extends View {
     public void setDividerEnabled(boolean value) {
         isDividerEnabled = value;
     }
+
+    /**
+     * Manually update the progress bar completion status
+     *
+     * @param value can only be in between 0 and 1 inclusive.
+     */
+    public void publishProgress(float value) {
+        if (value < 0 || value > 1) {
+            Log.w(TAG, "publishProgress: Progress value can only be in between 0 and 1");
+            return;
+        }
+
+        percentCompleted = progressBarWidth * value;
+        invalidate();
+    }
+
+    /**
+     * Add Divider to current position
+     */
+    private void addDivider() {
+        if (lastDividerPosition != percentCompleted) {
+            lastDividerPosition = percentCompleted;
+            dividerCount += 1;
+            dividerPositions.add(percentCompleted);
+            invalidate();
+        } else {
+            Log.w(TAG, "addDivider: Divider already added to current position");
+        }
+    }
+
 }
