@@ -92,14 +92,32 @@ public class SegmentedProgressBar extends View {
     }
 
     public void pause() {
+        if (countDownTimerWithPause == null) {
+            Log.e(TAG, "pause: Auto progress is not initialized. Use \"enableAutoProgressView\" to initialize the progress bar.");
+            return;
+        }
+
         countDownTimerWithPause.pause();
     }
 
+    /**
+     * Resume the progress bar
+     */
     public void resume() {
+        if (countDownTimerWithPause == null) {
+            Log.e(TAG, "resume: Auto progress is not initialized. Use \"enableAutoProgressView\" to initialize the progress bar.");
+            return;
+        }
+
         countDownTimerWithPause.resume();
     }
 
     public void cancel() {
+        if (countDownTimerWithPause == null) {
+            Log.e(TAG, "cancel: Auto progress is not initialized. Use \"enableAutoProgressView\" to initialize the progress bar.");
+            return;
+        }
+
         countDownTimerWithPause.cancel();
     }
 
