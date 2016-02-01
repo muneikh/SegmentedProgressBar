@@ -3,57 +3,46 @@ package com.muneikh.sample;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.muneikh.SegmentedProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SegmentedProgressBar segmentedProgressBar;
+    private SegmentedProgressBar segmentedProgressBarAuto, segmentedProgressBarManual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        segmentedProgressBar = (SegmentedProgressBar) findViewById(R.id.segmentedProgressBar);
+        segmentedProgressBarAuto = (SegmentedProgressBar) findViewById(R.id.spbAuto);
+        segmentedProgressBarManual = (SegmentedProgressBar) findViewById(R.id.spbManual);
 
-        //segmentedProgressBar.setShader(new int[]{getResources().getColor(R.color.blue), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow)});
-        segmentedProgressBar.enableAutoProgressView(30000);
-        segmentedProgressBar.setProgressColor(Color.RED);
-        segmentedProgressBar.setDividerColor(Color.BLACK);
-        segmentedProgressBar.setDividerEnabled(true);
-        segmentedProgressBar.setDividerWidth(2);
+        segmentedProgressBarAuto.enableAutoProgressView(30000);
+        segmentedProgressBarAuto.setDividerColor(Color.BLACK);
+        segmentedProgressBarAuto.setDividerEnabled(true);
+        segmentedProgressBarAuto.setDividerWidth(5);
+        segmentedProgressBarAuto.setShader(new int[]{Color.CYAN, Color.GREEN, Color.YELLOW});
+
+        segmentedProgressBarManual.setProgressColor(Color.RED);
+        segmentedProgressBarManual.publishProgress(0.60f);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        segmentedProgressBarAuto.resume();
     }
 
     public void pause(View view) {
-        segmentedProgressBar.pause();
+        segmentedProgressBarAuto.pause();
     }
 
     public void resume(View view) {
-        segmentedProgressBar.resume();
+        segmentedProgressBarAuto.resume();
+    }
+
+    public void addDivider(View view) {
+        segmentedProgressBarAuto.addDivider();
     }
 }

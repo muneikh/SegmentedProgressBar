@@ -13,23 +13,41 @@
     tools:showIn="@layout/activity_main">
 
     <com.muneikh.SegmentedProgressBar
-        android:id="@+id/segmentedProgressBar"
+        android:id="@+id/spbAuto"
         android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_height="30dp" />
 
     <Button
+        android:id="@+id/pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/spbAuto"
         android:onClick="pause"
         android:text="Pause" />
 
     <Button
+        android:id="@+id/resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/spbAuto"
+        android:layout_toRightOf="@+id/pause"
         android:onClick="resume"
         android:text="Resume" />
+
+    <Button
+        android:id="@+id/addDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spbAuto"
+        android:layout_toRightOf="@+id/resume"
+        android:onClick="addDivider"
+        android:text="Add Divider" />
+
+
+    <com.muneikh.SegmentedProgressBar
+        android:id="@+id/spbManual"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/addDivider" />
 
 </RelativeLayout>

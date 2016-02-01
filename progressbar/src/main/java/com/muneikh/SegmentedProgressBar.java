@@ -38,10 +38,13 @@ public class SegmentedProgressBar extends View {
 
     private float lastDividerPosition;
     private float percentCompleted;
+
     private int progressBarWidth;
     private long maxTimeInMillis;
+
     private int dividerCount = 0;
     private int dividerWidth = 2;
+
     private boolean isDividerEnabled;
 
     private List<Float> dividerPositions;
@@ -65,7 +68,7 @@ public class SegmentedProgressBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        progressBarWidth = w;
+
     }
 
     @Override
@@ -86,8 +89,23 @@ public class SegmentedProgressBar extends View {
         dividerPositions = new ArrayList<>();
     }
 
+    /**
+     * Updates the progress bar based on time passed
+     *
+     * @param millisPassed
+     */
     private void updateProgress(long millisPassed) {
         percentCompleted = progressBarWidth * (float) millisPassed / maxTimeInMillis;
+        invalidate();
+    }
+
+    /**
+     * Updates the progress bar based on manually passed percent value.
+     *
+     * @param percentValue
+     */
+    private void updateProgress(float percentValue) {
+        percentCompleted = progressBarWidth * percentValue;
         invalidate();
     }
 
@@ -126,9 +144,16 @@ public class SegmentedProgressBar extends View {
      *
      * @param colors
      */
-    public void setShader(int[] colors) {
-        Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
-        progressPaint.setShader(shader);
+    public void setShader(final int[] colors) {
+        this.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBarWidth = getWidth();
+                Log.d(TAG, "setShader: progressBarWidth : " + progressBarWidth);
+                Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
+                progressPaint.setShader(shader);
+            }
+        });
     }
 
     /**
@@ -200,20 +225,29 @@ public class SegmentedProgressBar extends View {
      *
      * @param value can only be in between 0 and 1 inclusive.
      */
-    public void publishProgress(float value) {
+    public void publishProgress(final float value) {
         if (value < 0 || value > 1) {
             Log.w(TAG, "publishProgress: Progress value can only be in between 0 and 1");
             return;
         }
 
-        percentCompleted = progressBarWidth * value;
-        invalidate();
+        if (progressBarWidth == 0) {
+            this.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBarWidth = getWidth();
+                    updateProgress(value);
+                }
+            });
+        }
+
+        updateProgress(value);
     }
 
     /**
      * Add Divider to current position
      */
-    private void addDivider() {
+    public void addDivider() {
         if (lastDividerPosition != percentCompleted) {
             lastDividerPosition = percentCompleted;
             dividerCount += 1;
