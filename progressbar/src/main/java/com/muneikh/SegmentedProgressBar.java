@@ -66,12 +66,6 @@ public class SegmentedProgressBar extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -128,6 +122,16 @@ public class SegmentedProgressBar extends View {
         }
 
         countDownTimerWithPause.resume();
+    }
+
+    public void reset() {
+        countDownTimerWithPause.cancel();
+        enableAutoProgressView(maxTimeInMillis);
+        dividerPositions.removeAll(dividerPositions);
+        percentCompleted = 0;
+        lastDividerPosition = 0;
+        dividerCount = 0;
+        invalidate();
     }
 
     public void cancel() {
@@ -257,5 +261,4 @@ public class SegmentedProgressBar extends View {
             Log.w(TAG, "addDivider: Divider already added to current position");
         }
     }
-
 }

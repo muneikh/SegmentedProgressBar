@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.muneikh.sample.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -35,19 +31,35 @@
         android:text="Resume" />
 
     <Button
-        android:id="@+id/addDivider"
+        android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/spbAuto"
         android:layout_toRightOf="@+id/resume"
-        android:onClick="addDivider"
-        android:text="Add Divider" />
+        android:onClick="reset"
+        android:text="Reset" />
 
+    <Button
+        android:id="@+id/addDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spbAuto"
+        android:layout_toRightOf="@+id/reset"
+        android:onClick="addDivider"
+        android:text="Divider" />
 
     <com.muneikh.SegmentedProgressBar
         android:id="@+id/spbManual"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@+id/addDivider" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spbManual"
+        android:max="100" />
 
 </RelativeLayout>
