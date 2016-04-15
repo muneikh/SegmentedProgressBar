@@ -46,6 +46,8 @@ private SegmentedProgressBar segmentedProgressBar;
         android:layout_width="match_parent"
         android:layout_height="10dp" />
         
+        ![alt tag](http://i.stack.imgur.com/nZwWU.png)
+        
 ```
 
 License
