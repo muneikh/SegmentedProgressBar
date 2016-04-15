@@ -25,8 +25,7 @@
         android:id="@+id/resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spbAuto"
-        android:layout_toRightOf="@+id/pause"
+        android:layout_below="@+id/pause"
         android:onClick="resume"
         android:text="Resume" />
 
@@ -34,8 +33,7 @@
         android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spbAuto"
-        android:layout_toRightOf="@+id/resume"
+        android:layout_below="@+id/resume"
         android:onClick="reset"
         android:text="Reset" />
 
@@ -43,23 +41,8 @@
         android:id="@+id/addDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spbAuto"
-        android:layout_toRightOf="@+id/reset"
+        android:layout_below="@+id/reset"
         android:onClick="addDivider"
-        android:text="Divider" />
-
-    <com.muneikh.SegmentedProgressBar
-        android:id="@+id/spbManual"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/addDivider" />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/spbManual"
-        android:max="100" />
+        android:text="Add Divider" />
 
 </RelativeLayout>
