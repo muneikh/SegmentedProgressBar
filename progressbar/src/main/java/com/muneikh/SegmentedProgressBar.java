@@ -24,17 +24,19 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SegmentedProgressBar extends View {
-    private static final String TAG = "SegmentedProgressBar";
 
+    private static final String TAG = "SegmentedProgressBar";
     private static final int FPS_IN_MILLI = 16; // 16.66 ~ 60fps
 
     private Paint progressPaint = new Paint();
     private Paint dividerPaint = new Paint();
+    private int[] gradientColors = new int[3];
 
     private float lastDividerPosition;
     private float percentCompleted;
@@ -43,7 +45,7 @@ public class SegmentedProgressBar extends View {
     private long maxTimeInMillis;
 
     private int dividerCount = 0;
-    private int dividerWidth = 2;
+    private float dividerWidth = 1;
 
     private boolean isDividerEnabled;
 
@@ -81,6 +83,23 @@ public class SegmentedProgressBar extends View {
 
     private void init() {
         dividerPositions = new ArrayList<>();
+
+        ViewTreeObserver viewTreeObserver = getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    progressBarWidth = getWidth();
+                    Log.d(TAG, "setShader: progressBarWidth : " + progressBarWidth);
+
+                    if (gradientColors.length > 0) {
+                        Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), gradientColors, null, Shader.TileMode.MIRROR);
+                        progressPaint.setShader(shader);
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -149,15 +168,12 @@ public class SegmentedProgressBar extends View {
      * @param colors
      */
     public void setShader(final int[] colors) {
-        this.post(new Runnable() {
-            @Override
-            public void run() {
-                progressBarWidth = getWidth();
-                Log.d(TAG, "setShader: progressBarWidth : " + progressBarWidth);
-                Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
-                progressPaint.setShader(shader);
-            }
-        });
+        this.gradientColors = colors;
+
+        if (progressBarWidth > 0) {
+            Shader shader = new LinearGradient(0, 0, progressBarWidth, getHeight(), colors, null, Shader.TileMode.MIRROR);
+            progressPaint.setShader(shader);
+        }
     }
 
     /**
@@ -183,7 +199,7 @@ public class SegmentedProgressBar extends View {
      *
      * @param width
      */
-    public void setDividerWidth(int width) {
+    public void setDividerWidth(float width) {
         if (width < 0) {
             Log.w(TAG, "setDividerWidth: Divider width can not be negative");
             return;
@@ -233,16 +249,6 @@ public class SegmentedProgressBar extends View {
         if (value < 0 || value > 1) {
             Log.w(TAG, "publishProgress: Progress value can only be in between 0 and 1");
             return;
-        }
-
-        if (progressBarWidth == 0) {
-            this.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressBarWidth = getWidth();
-                    updateProgress(value);
-                }
-            });
         }
 
         updateProgress(value);
