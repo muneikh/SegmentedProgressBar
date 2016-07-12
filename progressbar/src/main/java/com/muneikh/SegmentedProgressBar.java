@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -52,6 +53,8 @@ public class SegmentedProgressBar extends View {
     private List<Float> dividerPositions;
     private CountDownTimerWithPause countDownTimerWithPause;
 
+    private float cornerRadius;
+
     public SegmentedProgressBar(Context context) {
         super(context);
         init();
@@ -71,7 +74,7 @@ public class SegmentedProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(0, 0, percentCompleted, getHeight(), progressPaint);
+        canvas.drawRoundRect(new RectF(0, 0, percentCompleted, getHeight()), cornerRadius, cornerRadius, progressPaint);
 
         if (dividerCount > 0 && isDividerEnabled) {
             for (int i = 0; i < dividerCount; i++) {
@@ -83,6 +86,7 @@ public class SegmentedProgressBar extends View {
 
     private void init() {
         dividerPositions = new ArrayList<>();
+        cornerRadius = 0;
 
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
@@ -266,5 +270,9 @@ public class SegmentedProgressBar extends View {
         } else {
             Log.w(TAG, "addDivider: Divider already added to current position");
         }
+    }
+
+    public void setCornerRadius(float cornerRadius) {
+        this.cornerRadius = cornerRadius;
     }
 }

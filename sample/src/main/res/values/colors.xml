@@ -8,4 +8,6 @@
     <color name="green">#63e794</color>
     <color name="blue">#00c8e4</color>
 
+    <color name="progress_bar_background">#4d000000</color>
+
 </resources>
