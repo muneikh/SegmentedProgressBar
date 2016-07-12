@@ -3,6 +3,9 @@ Segmented Progress Bar
 
 A simple segmented progress bar that allows to add dividers to display chunked loading.
 
+[Imgur](http://i.imgur.com/igrDGHb.gif?1)
+
+
 ```java
 
 class ExampleActivity extends Activity {
