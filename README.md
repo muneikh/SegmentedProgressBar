@@ -3,7 +3,7 @@ Segmented Progress Bar
 
 A simple segmented progress bar that allows to add dividers to display chunked loading.
 
-![Output sample](http://i.imgur.com/igrDGHb.gif)
+![Output sample](http://i.imgur.com/Zb6Vpjh.gif)
 
 ```java
 
