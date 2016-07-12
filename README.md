@@ -5,53 +5,6 @@ A simple segmented progress bar that allows to add dividers to display chunked l
 
 ![Output sample](http://i.imgur.com/Zb6Vpjh.gif)
 
-```java
-
-class ExampleActivity extends Activity {
-
-private SegmentedProgressBar segmentedProgressBar;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        segmentedProgressBar = (SegmentedProgressBar) findViewById(R.id.segmentedProgressBar);
-
-        // Allows to trigger a smooth progress transition of progress bar in the given time.
-        segmentedProgressBar.enableAutoProgressView(30000);
-        
-        // Allows to add a gradient fill for the progress bar 
-        segmentedProgressBar.setShader(new int[]{getResources().getColor(R.color.blue), getResources().getColor(R.color.green), getResources().getColor(R.color.yellow)});
-        
-        // OR
-        
-        // Set the progress bar color 
-        segmentedProgressBar.setProgressColor(Color.RED);
-        
-        // Set the divider colors
-        segmentedProgressBar.setDividerColor(Color.BLACK);
-        
-        // Enable divider functionality
-        segmentedProgressBar.setDividerEnabled(true);
-        
-        // Set the width of the divider
-        segmentedProgressBar.setDividerWidth(2);
-        
-        // Resume and Pause the segmneted progress bar 
-        segmentedProgressBar.resume();
-        segmentedProgressBar.pause();
-    }
-}
-
-<com.muneikh.SegmentedProgressBar
-        android:id="@+id/segmentedProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-        
-        ![alt tag](http://i.stack.imgur.com/nZwWU.png)
-        
-```
-
 License
 -------
 
