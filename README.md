@@ -5,8 +5,6 @@ A simple segmented progress bar that allows to add dividers to display chunked l
 
 ![Alt text](/assets/output.gif?raw=true "Demo")
 
-![Output sample](http://i.imgur.com/Zb6Vpjh.gif)
-
 License
 -------
 
